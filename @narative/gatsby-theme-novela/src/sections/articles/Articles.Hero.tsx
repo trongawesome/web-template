@@ -50,9 +50,6 @@ const ArticlesHero: React.FC<IAuthor> = ({ authors }) => {
         <HeroHeading dangerouslySetInnerHTML={{ __html: hero.writingHeading }} />
         <InfoText>
           Without words, apps would be an unusable jumble of shapes and icons.
-          <Anchor to="/archive" data-a11y="false">
-            Archive
-          </Anchor>
         </InfoText>
       </HeadingContainer>
     </Section>
