@@ -5,11 +5,11 @@ export default {
 
   primary: "#2C2D31",
   secondary: "#5B5C5E",
-  grey: "#75959A",
+  grey: "#83878E",
   background: "#EFF0F5",
   backgroundModal: "rgba(209, 232, 235, 0.98)",
   cleanBackground: "#FFFFFF",
-  accent: "#3A5C21",
+  accent: "#F5495E",
   hover: "rgba(0, 0, 0, 0.07)",
   gradient: "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #FFFFFF 100%)",
   gradientImage: "linear-gradient(180deg, rgba(209, 232, 235, 0) 0%, rgba(209, 232, 235, 0.95) 71.88%, #D1E8EB 100%)",

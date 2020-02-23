@@ -47,7 +47,7 @@ const NavControls = styled.div`
 const NavLink = styled(Link)`
   font-weight: ${p => p.theme.fontsWeight.bold};
   font-family: ${p => p.theme.fonts.title};
-  font-size: 16px;
+  font-size: 12px;
   color: ${p => p.theme.colors.grey};
   transition: color 0.25s var(--ease-in-out-quad);
   display: inline-block;
