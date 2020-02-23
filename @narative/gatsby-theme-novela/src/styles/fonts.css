@@ -1,22 +1,9 @@
-/* @font-face {
-    font-family: 'Recoleta';
-    src: url('./fonts/Recoleta-SemiBold.eot');
-    src: local('Recoleta SemiBold'), local('Recoleta-SemiBold'),
-        url('./fonts/Recoleta-SemiBold.eot?#iefix') format('embedded-opentype'),
-        url('./fonts/Recoleta-SemiBold.woff') format('woff'),
-        url('./fonts/Recoleta-SemiBold.ttf') format('truetype');
-    font-weight: 600;
-    font-style: normal;
-    font-display: swap;
-} */
-
 @font-face {
     font-family: 'Title';
     font-style: normal;
     font-weight: 600;
-    src: local('Domaine Display Semibold'),
-        url('./fonts/DomaineDisp-Semibold.woff') format('woff'),
-        url('./fonts/DomaineDisp-Semibold.woff2') format('woff2');
+    src: url('./fonts/pano.woff') format('woff'),
+        url('./fonts/pano.woff2') format('woff2');
     font-display: swap;
 }
 

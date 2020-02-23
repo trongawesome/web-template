@@ -12,6 +12,7 @@ const commonStyles = p => css`
   font-weight: ${p.theme.fontsWeight.bold};
   color: ${p.theme.colors.primary};
   font-family: ${p.theme.fonts.title};
+  // letter-spacing: -0.03em;
 `;
 
 const h1 = styled.h1`
