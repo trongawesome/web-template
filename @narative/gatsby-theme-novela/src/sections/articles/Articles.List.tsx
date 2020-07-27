@@ -27,10 +27,16 @@ const ArticlesList: React.FC<ArticlesListProps> = ({
 }) => {
   if (!articles) return null;
 
+  const hasOnlyOneArticle = articles.length === 1;
   const { gridLayout = 'tiles', hasSetGridLayout, getGridLayout } = useContext(
     GridLayoutContext,
   );
 
+  /**
+   * We're taking the flat array of articles [{}, {}, {}...]
+   * and turning it into an array of pairs of articles [[{}, {}], [{}, {}], [{}, {}]...]
+   * This makes it simpler to create the grid we want
+   */
   const articlePairs = articles.reduce((result, value, index, array) => {
     if (index % 2 === 0) {
       result.push(array.slice(index, index + 2));
@@ -61,6 +67,7 @@ export default ArticlesList;
 const ListItem: React.FC<ArticlesListItemProps> = ({ article, narrow }) => {
   if (!article) return null;
 
+  const { gridLayout } = useContext(GridLayoutContext);
   const hasOverflow = narrow && article.title.length > 35;
   const imageSource = article.hero.narrow;
   const hasHeroImage =
@@ -71,14 +78,18 @@ const ListItem: React.FC<ArticlesListItemProps> = ({ article, narrow }) => {
   return (
     <ArticleLink to={article.slug} data-a11y="false">
       <Item>
-        <ImageContainer >
+        <ImageContainer narrow={narrow} gridLayout={gridLayout}>
           {hasHeroImage ? <Image src={imageSource} /> : <ImagePlaceholder />}
         </ImageContainer>
         <div>
-          <Title dark hasOverflow={hasOverflow}>
+          <Title dark hasOverflow={hasOverflow} gridLayout={gridLayout}>
             {article.title}
           </Title>
-          <Excerpt>
+          <Excerpt
+            narrow={narrow}
+            hasOverflow={hasOverflow}
+            gridLayout={gridLayout}
+          >
             {article.excerpt}
           </Excerpt>
           <MetaData>
@@ -119,20 +130,18 @@ const ArticlesListContainer = styled.div<{ alwaysShowAllDetails?: boolean }>`
   ${p => p.alwaysShowAllDetails && showDetails}
 `;
 
+
 const List = styled.div`
+  position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-column-gap: 30px;
   grid-template-rows: 2;
-
+  column-gap: 30px;
+  
   &:not(:last-child) {
     margin-bottom: 75px;
   }
-
-  ${mediaqueries.desktop_medium`
-    grid-template-columns: 1fr 1fr;
-  `}
-
+  
   ${mediaqueries.tablet`
     grid-template-columns: 1fr;
     
@@ -146,10 +155,6 @@ const Item = styled.div`
   position: relative;
   margin-bottom: 64px;
 
-  ${mediaqueries.tablet`
-    margin-bottom: 60px;
-  `}
-
   @media (max-width: 540px) {
     background: ${p => p.theme.colors.card};
   }
@@ -157,13 +162,12 @@ const Item = styled.div`
   ${mediaqueries.phablet`
     margin-bottom: 40px;
   `}
-
 `;
 
-const ImageContainer = styled.div`
+const ImageContainer = styled.div<{ narrow: boolean; gridLayout: string }>`
   position: relative;
-  height: 280px;
-  margin-bottom: 30px;
+  height: ${p => (p.gridLayout === 'tiles' ? '280px' : '220px')};
+  margin-bottom: ${p => (p.gridLayout === 'tiles' ? '30px' : 0)};
   transition: transform 0.3s var(--ease-out-quad),
     box-shadow 0.3s var(--ease-out-quad);
 
@@ -186,7 +190,8 @@ const ImageContainer = styled.div`
 const Title = styled(Headings.h2)`
   font-size: 21px;
   font-family: ${p => p.theme.fonts.title};
-  margin-bottom: 10px;
+  margin-bottom: ${p =>
+    p.hasOverflow && p.gridLayout === 'tiles' ? '10px' : '10px'};
   transition: color 0.3s ease-in-out;
   ${limitToTwoLines};
 
@@ -206,14 +211,18 @@ const Title = styled(Headings.h2)`
   `}
 `;
 
-const Excerpt = styled.p`
+const Excerpt = styled.p<{
+  hasOverflow: boolean;
+  narrow: boolean;
+  gridLayout: string;
+}>`
   ${limitToTwoLines};
   font-size: 16px;
   margin-bottom: 10px;
   color: ${p => p.theme.colors.secondary};
   font-family: ${p => p.theme.fonts.body};
-  display: box;
-  max-width: 515px;
+  display: ${p => (p.hasOverflow && p.gridLayout === 'tiles' ? 'box' : 'box')};
+  max-width: ${p => (p.narrow ? '515px' : '515px')};
 
   ${mediaqueries.desktop`
     display: -webkit-box;
@@ -250,6 +259,7 @@ const ArticleLink = styled(Link)`
   height: 100%;
   top: 0;
   left: 0;
+  border-radius: 5px;
   z-index: 1;
   transition: transform 0.33s var(--ease-out-quart);
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
