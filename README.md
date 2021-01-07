@@ -1,3 +1,5 @@
+# Base template to build next projects
+
 ### Table of Contents
 
 - [Why Novela?](#why-use-novela)
